@@ -7,23 +7,22 @@ class HomePage(Element, Controller):
         Element.__init__(self)
         Controller.__init__(self)
         self.user = user_info
-        self.user_id, self.user_fisrt_name, self.user_last_name, self.user_email = self.user[0], self.user[1], self.user[2], self.user[3]     
+        self.user_id, self.user_first_name, self.user_last_name, self.user_email = self.user[0], self.user[1], self.user[2], self.user[3]     
 
         # Error Message  
-        self.not_conform = False
-        self.transaction_event = False 
         self.accounts_running = True
-        self.transaction_running = True
 
         # Disconnect btn
         self.disconnected = True
 
         # Input
-    
         self.entry = False
 
         # Main Page
         self.welcome_message = ""                   
+
+        # Modify profile
+        self.profile_modified = False
 
         #Load Image
         self.image_paths = {       
@@ -37,7 +36,8 @@ class HomePage(Element, Controller):
         for name, path in self.image_paths.items():
             self.images[name] = pygame.image.load(path)
 
-        self.profile_display, self.checking_saving_display, self.transfer_display = False, False, False
+        self.profile_display= False
+        self.confirm_button_rect, self.fname_input_rect, self.lname_input_rect, self.email_input_rect = pygame.Rect(0,0,0,0), pygame.Rect(0,0,0,0), pygame.Rect(0,0,0,0), pygame.Rect(0,0,0,0)
 
         self.welcome_message_list = ["Welcome to your profile! Here, you can view all the details and information pertinent to you",
         "Welcome! You are currently on the homepage where you can view your general details",
@@ -85,9 +85,8 @@ class HomePage(Element, Controller):
 
         # User info
         self.img_not_center("Profil pic", 90, 160, 90, 90, self.images["profile"])
-        self.text_not_center(self.font1, 15, f"{self.user_fisrt_name} {self.user_last_name}", self.grey3, 70, 260)
-        self.profile_rect = self.button_hover_small("My Profil", 140, 310, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Profil", self.font1, self.white,15, 0, 3
-        )
+        self.text_not_center(self.font1, 15, f"{self.user_first_name} {self.user_last_name}", self.grey3, 70, 260)
+        self.profile_rect = self.button_hover_small("My Profil", 140, 310, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Profil", self.font1, self.white,15, 0, 3)
 
         # Home Rect
         self.home_rect = self.button_hover_small("Home Page", 140, 360, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "Home", self.font1, self.white,15, 0, 3 )
@@ -97,13 +96,13 @@ class HomePage(Element, Controller):
         pygame.draw.line(self.Window, self.grey3, (100, 545), (180, 545), 3)
 
         # Product 1
-        self.checking_rect = self.button_hover_small("My Product 1", 140, 450, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Product 1", self.font1, self.white,15, 0, 3)
+        self.product1_rect = self.button_hover_small("My Product 1", 140, 450, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Product 1", self.font1, self.white,15, 0, 3)
 
         # Product 2
-        self.saving_rect = self.saving_rect = self.button_hover_small("My Product 2", 140, 500, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Product 2", self.font1, self.white,15, 0, 3)
+        self.product2_rect = self.saving_rect = self.button_hover_small("My Product 2", 140, 500, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "My Product 2", self.font1, self.white,15, 0, 3)
 
         # Contact Us
-        self.transfer_rect = self.button_hover_small("Contact Us", 140, 590, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "Contact Us", self.font1, self.white,15, 0, 3)
+        self.contact_rect = self.button_hover_small("Contact Us", 140, 590, 190, 40, self.blue2, self.blue2, self.blue2, self.blue2, "Contact Us", self.font1, self.white,15, 0, 3)
     
     def main_section (self):
 
@@ -126,13 +125,16 @@ class HomePage(Element, Controller):
     
     def profile_design(self):
       
-        self.fname_input_rect = self.rect_full(self.white, 330, 300, 260, 30, 5)
-        self.lname_input_rect = self.rect_full(self.white, 330, 350, 260, 30, 5) 
-        self.email_input_rect = self.rect_full(self.white, 330, 400, 260, 30, 5) 
+        self.confirm_button_rect = self.button_hover_small("Confirm", 540, 520, 120, 30, self.blue2, self.blue2, self.blue2, self.blue2, "Confirm", self.font1, self.white,15, 0, 3)
+        self.fname_input_rect = self.rect_full(self.white, 540, 310, 320, 30, 5)
+        self.lname_input_rect = self.rect_full(self.white, 570, 360, 320, 30, 5) 
+        self.email_input_rect = self.rect_full(self.white, 535, 410, 320, 30, 5) 
+
+        self.text_not_center(self.font2, 12, "* Please click on the white rectangle to edit your information.", self.grey1, 300, 210)
 
         # Name
         self.text_not_center(self.font1, 16, "Name", self.grey1, 330, 300)
-        self.text_not_center(self.font2, 16, self.user_fisrt_name, self.grey1, 390, 300)
+        self.text_not_center(self.font2, 16, self.user_first_name, self.grey1, 390, 300)
         pygame.draw.line(self.Window, self.green4, (330, 330), (750, 330), 1)
 
         # Surname
@@ -144,6 +146,10 @@ class HomePage(Element, Controller):
         self.text_not_center(self.font1, 16, "Email", self.grey1, 330, 400)
         self.text_not_center(self.font2, 16, self.user_email, self.grey1, 380, 400)
         pygame.draw.line(self.Window, self.green4, (330, 430), (750, 430), 1)
+
+        if self.profile_modified:
+            pygame.draw.line(self.Window, self.green, (615 - 6, 520 - 6), (615 + 2, 520 + 7), 3)
+            pygame.draw.line(self.Window, self.green, (615 + 1, 520 + 7), (615 + 8, 520 - 12), 3)     
  
 
     def homepage_run(self):
@@ -162,68 +168,73 @@ class HomePage(Element, Controller):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                    
                     if self.profile_rect.collidepoint(event.pos):
-                        self.profile_display, self.checking_saving_display, self.transfer_display, self.checking_saving_event, self.transaction_event = True, False, False, False, False
+                        self.profile_display = True
                         self.welcome_message = self.welcome_message_list[0] 
+
+                    elif self.product1_rect.collidepoint(event.pos):
+                        pass
+                    elif self.product2_rect.collidepoint(event.pos):
+                        pass
+                    elif self.contact_rect.collidepoint(event.pos):
+                        pass
 
                     elif self.log_out_rect.collidepoint(event.pos):
                         self.disconnected = True
                         self.accounts_running = False          
-
-                        if self.input_name_receiver_rect.collidepoint(event.pos):
-                            if self.input_name_receiver == "Name":
-                                self.input_name_receiver = ""
-                            self.entry = 6
-
-                        elif self.input_surname_receiver_rect.collidepoint(event.pos):
-                            if self.input_surname_receiver == "Surname":
-                                self.input_surname_receiver = ""
-                            self.entry = 7
-
-
-                        elif self.confirm_button_rect.collidepoint(event.pos):
-                            pass                        
                     
+                    elif self.home_rect.collidepoint(event.pos):
+                        self.profile_display = False
+                        self.welcome_message = ""
+
+                    elif self.confirm_button_rect.collidepoint(event.pos):
+                        if (self.user_first_name not in ["Modify your first name", ""] and
+                            self.user_last_name not in ["Modify your last name", ""] and
+                            self.user_email not in ["Modify your email", ""]):
+                            self.update_user(self.user_id, self.user_first_name, self.user_last_name, self.user_email)
+                            self.profile_modified = True
+
                     # Modify profile
                     elif self.fname_input_rect.collidepoint(event.pos):
-                        self.user_fisrt_name = "Click here to modify your first name"
+                        if self.user_first_name == "Modify your first name": 
+                            self.user_first_name = ""
+                        else:
+                            self.user_first_name = "Modify your first name"
                         self.entry = 100                   
 
                     elif self.lname_input_rect.collidepoint(event.pos):
-                        self.user_last_name= "Click here to modify your last name"
+                        if self.user_last_name == "Modify your last name": 
+                            self.user_last_name = ""
+                        else:
+                            self.user_last_name= "Modify your last name"
                         self.entry = 101
 
                     elif self.email_input_rect.collidepoint(event.pos):
-                        self.user_email_name = "Click here to modify your first email"
+                        if self.user_email== "Modify your email": 
+                            self.user_email = ""
+                        else:
+                            self.user_email = "Modify your email"
                         self.entry = 102
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         if self.entry == 100: 
-                            self.user_fisrt_name = self.user_fisrt_name[:-1]
+                            self.user_first_name = self.user_first_name[:-1]
                         elif self.entry == 101: 
                             self.user_last_name= self.user_last_name[:-1] 
                         elif self.entry == 102: 
-                            self.user_email_name=  self.user_email_name[:-1] 
+                            self.user_email=  self.user_email[:-1] 
 
                     else:
                         if self.entry == 100:              
-                            if self.user_fisrt_name == "Click here to modify your first name": 
-                                self.user_fisrt_name == ""
-                            elif event.unicode.islower():
-                                self.user_fisrt_name = self.user_fisrt_name + event.unicode   
+                            if event.unicode.isalpha():
+                                self.user_first_name = self.user_first_name + event.unicode   
 
                         elif self.entry == 101:
-                            if self.user_last_name == "Click here to modify your first name": 
-                                    self.user_last_name== ""
-                            elif event.unicode():
+                            if event.unicode.isalpha():
                                 self.user_last_name= self.user_last_name + event.unicode                               
-                    
 
                         elif self.entry == 102:
-                            if self.user_email== "Click here to modify your first name": 
-                                self.user_email == ""
-
-                            elif event.unicode():
+                            if event.unicode.isalnum() or event.unicode in "@._-":
                                 self.user_email = self.user_email + event.unicode   
                             
                     

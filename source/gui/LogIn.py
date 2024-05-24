@@ -134,14 +134,14 @@ class LogIn(Element, Animation, Controller):
         self.text_center(self.font4, 25, "About you", self.white, self.W//2, self.H//2-270)
 
         if self.error_fn:
-            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2, self.H//2-232)
+            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2 + 230, self.H//2-192)
 
         # First Name
         self.input_first_name_register_rect = self.button_hover("", self.W//2, self.H//2-192, 350, 50, self.blue2, self.blue1, self.blue2, self.blue1, self.input_first_name_register, self.font4, self.white,15, 1, 5)
         self.text_center(self.font4, 15, "First Name", self.white, self.W//2, self.H//2-232)
 
         if self.error_ln:
-            self.text_center(self.font4, 15, "Invalid Input", self.black, self.W//2, self.H//2-147)
+            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2 + 230, self.H//2-107)
 
         # Last Name
         self.input_last_name_register_rect = self.button_hover("", self.W//2, self.H//2-107, 350, 50, self.blue2, self.blue1, self.blue2, self.blue1, self.input_last_name_register, self.font4, self.white,15, 1, 5)
@@ -152,16 +152,17 @@ class LogIn(Element, Animation, Controller):
         self.text_center(self.font4, 15, "Email", self.white, self.W//2, self.H//2-62)
 
         if self.error_em:
-            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2, self.H//2-62)
+            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2 + 230, self.H//2-22)
             self.text_center(self.font4, 15, "example@example.com", self.red, self.W//2, self.H//2-22)
+
         if self.error_pw:
-            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2, self.H//2+17)
+            self.text_center(self.font4, 15, "Invalid Input", self.red, self.W//2 + 230, self.H//2+57)
             self.text_center(self.font4, 15, "Password should have ", self.red, self.W//2, self.H//2+95)
-            self.text_center(self.font4, 13, "- Minimum of 8 Characters", self.red, self.W//2, self.H//2+95)
-            self.text_center(self.font4, 13, "- Lower cases letters", self.red, self.W//2, self.H//2+108)
-            self.text_center(self.font4, 13, "- Upper cases letters", self.red, self.W//2, self.H//2+122)
-            self.text_center(self.font4, 13, "- Numbers", self.red, self.W//2, self.H//2+134)
-            self.text_center(self.font4, 13, "- Special Character", self.red, self.W//2, self.H//2+147)
+            self.text_center(self.font4, 13, "- Minimum of 8 Characters", self.red, self.W//2, self.H//2+108)
+            self.text_center(self.font4, 13, "- Lower cases letters", self.red, self.W//2, self.H//2+122)
+            self.text_center(self.font4, 13, "- Upper cases letters", self.red, self.W//2, self.H//2+134)
+            self.text_center(self.font4, 13, "- Numbers", self.red, self.W//2, self.H//2+147)
+            self.text_center(self.font4, 13, "- Special Character", self.red, self.W//2, self.H//2+160)
 
         # Password
         self.input_password_register_rect = self.button_hover("", self.W//2, self.H//2+57, 350, 50, self.blue2, self.blue1, self.blue2, self.blue1, self.input_password_register, self.font4, self.white, 15, 1, 5)
@@ -203,6 +204,8 @@ class LogIn(Element, Animation, Controller):
                         self.user = self.login_user()
                         if self.user != None:
                             self.login_running = False
+                            self.input_email = ""
+                            self.input_password = ""
                         else:
                             self.error_login = True
 
@@ -282,8 +285,6 @@ class LogIn(Element, Animation, Controller):
                     elif self.checkbox_rect.collidepoint(event.pos):
                         self.checkbox = not self.checkbox
                         self.error_ck = False
-                        self.account_details()
-                        pass
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
