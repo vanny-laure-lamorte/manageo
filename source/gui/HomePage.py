@@ -186,8 +186,7 @@ class HomePage(Element, Controller):
                     # Modify profile
                     elif self.fname_input_rect.collidepoint(event.pos):
                         self.user_fisrt_name = "Click here to modify your first name"
-                        self.entry = 100
-                   
+                        self.entry = 100                   
 
                     elif self.lname_input_rect.collidepoint(event.pos):
                         self.user_last_name= "Click here to modify your last name"
@@ -197,7 +196,6 @@ class HomePage(Element, Controller):
                         self.user_email_name = "Click here to modify your first email"
                         self.entry = 102
 
-                
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         if self.entry == 100: 

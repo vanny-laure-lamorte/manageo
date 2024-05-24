@@ -252,25 +252,13 @@ class LogIn(Element, Animation, Controller):
 
                     elif self.input_password_register_rect.collidepoint(event.pos):
                         self.error_pw = False
-                        self.entry = 6
-
-                    elif self.input_account_Current.collidepoint(event.pos):
-                        pass
-                        # self.current_account = not self.current_account
-                        # self.error_op = False
-
-                    elif self.input_account_Savings.collidepoint(event.pos):
-                        pass
-                        # self.savings_account = not self.savings_account
-                        # self.error_op = False
+                        self.entry = 6                  
 
                     elif self.register_rect.collidepoint(event.pos):
                         if (not self.input_first_name_register or
                             not self.input_last_name_register or
                             not self.input_email_register or
-                            not self.input_password_register or
-                            not self.current_account and
-                            not self.savings_account or 
+                            not self.input_password_register or                       
                             not self.checkbox):
                             if self.input_first_name_register == "":
                                 self.error_fn = True
@@ -279,24 +267,14 @@ class LogIn(Element, Animation, Controller):
                             if self.input_email_register == "" or not self.validate_email(self.input_email_register):
                                 self.error_em = True
                             if self.input_password_register == ""  or not self.validate_password(self.input_password_register):
-                                self.error_pw = True
-                            if not self.current_account and not self.savings_account:
-                                self.error_op = True
+                                self.error_pw = True                           
                             if not self.checkbox:
                                 self.error_ck = True
-                        else:
-                            if self.current_account and not self.savings_account:
-                                self.account_type_number = 1
-                            if self.savings_account and not self.current_account:
-                                self.account_type_number = 2
-                            if self.current_account and self.savings_account:
-                                self.account_type_number = 3
+                        else:                       
                             self.register_user()
                             self.login_running = True
                             self.register_running = False
-                            self.checkbox = False
-                            self.current_account = False
-                            self.savings_account = False
+                            self.checkbox = False                         
                             self.input_first_name_register = ""
                             self.input_last_name_register = ""
                             self.input_email_register = ""                    
